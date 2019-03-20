@@ -1,0 +1,48 @@
+*{
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+header{
+    font-size: 2rem;
+    line-height: 2.5rem;
+    font-weight: bold;
+}
+
+footer{
+    font-size: 0.7rem;
+    line-height: 1rem;
+}
+
+header, footer{
+    background-color: black;
+    color: white;
+}
+
+main{
+    height: calc(100vh - 3.5rem);
+}
+
+body{
+    background-color: #00831d;
+}
+
+.text{
+    position: relative;
+    top: 40vh;
+}
+
+p{
+    text-align: center;
+    color: darkslategray;
+    font-style: italic;
+    font-family: fantasy;
+    font-size: 2.5rem;
+    animation: fadeEffect 3s infinite;
+}
+
+@keyframes fadeEffect {
+     0%{opacity:0} 50%{opacity:1}100%{opacity:0}
+}
+
