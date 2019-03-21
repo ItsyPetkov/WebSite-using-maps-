@@ -1,0 +1,14 @@
+.slected-user-container .user-type {
+    padding: 20px 40px;
+    background-color: rebeccapurple;
+    color: white;
+    position: relative;
+}
+.slected-user-container .user-type i, .slected-user-container .user-type p {
+    display: inline;
+}
+.slected-user-container form, .slected-user-container .header {
+    margin-top: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
+}
