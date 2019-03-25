@@ -97,7 +97,7 @@
                 if (mysqli_num_rows($result) == 1) {
                     echo "User already exists";
                 } else {
-                    $sql2 = "INSERT INTO `cs317mads`.`users` (`id`,`username`,`password`,`email`) VALUES (NULL ,'$name', '$encryptedPassword', '$email');";
+                    $sql2 = "INSERT INTO `cs317mads`.`users` (`id`,`username`,`password`,`email`,`bike`) VALUES (NULL ,'$name', '$encryptedPassword', '$email', NULL);";
                     if($result2 = $db->query($sql2)) {
                         header("location:login.php");
                     } else {

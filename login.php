@@ -86,7 +86,7 @@ elseif(isset($_POST["pwdreset"])) {
         $newpwd = rand();
         $new_encr_pwd = md5($newpwd);
         $message = "Your new password is $newpwd";
-        mail($email, "Password Reset - Group K's Website", $message);
+        mail($email, "Password Reset - Group S's Mobile App", $message);
         $sql = "UPDATE users SET password = '$new_encr_pwd' WHERE email = '$email'";
 
         if ($db->query($sql) === TRUE) {
