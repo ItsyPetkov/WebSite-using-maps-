@@ -47,7 +47,7 @@ if(isset($_POST['LogIn'])) {
         if($result->num_rows == 1) {
             while ($row = $result->fetch_assoc()) {
                 $_SESSION['id'] = $row['id'];
-                $_SESSION['name'] = $row['name'];
+                $_SESSION['name'] = $row['username'];
                 $_SESSION['email'] = $email;
 //                if ($row['institute'] == null) {
 //                    $_SESSION['user-type'] = 'normal';
