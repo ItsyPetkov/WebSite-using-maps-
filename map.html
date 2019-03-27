@@ -10,6 +10,33 @@
     <link rel="shortcut icon" href="#">
     <link rel="icon" sizes="128x128" href="bike.png" />
     <style>
+
+        *{
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        header{
+            font-size: 2rem;
+            line-height: 2.5rem;
+            font-weight: bold;
+        }
+
+        footer{
+            font-size: 0.7rem;
+            line-height: 1rem;
+        }
+
+        header, footer{
+            background-color: black;
+            color: white;
+        }
+
+        main{
+            height: calc(100vh - 3.5rem);
+        }
+
         /* Always set the map height explicitly to define the size of the div
          * element that contains the map. */
         textarea, select, input, button { outline: none; }
@@ -66,8 +93,12 @@
     </style>
 </head>
 <body>
+<header>Smart Commute</header>
+<main>
 <input id="pac-input" class="controls" type="text"  size="25" placeholder="Enter your destination...">
 <div id="map"></div>
+</main>
+<footer>Created by Group S 2019</footer>
 <script>
     /*
     var map;
