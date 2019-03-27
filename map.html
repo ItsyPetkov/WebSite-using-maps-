@@ -2,101 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Map Test</title>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+
     <link rel="shortcut icon" href="#">
-    <link rel="icon" sizes="128x128" href="bike.png" />
-    <style>
+    <link rel="icon" sizes="128x128" href="bike.png"/>
 
-        *{
-            margin: 0;
-            padding: 0;
-            text-align: center;
-        }
+    <link rel="stylesheet" type="text/css" href="CSS/map.css"/>
 
-        header{
-            font-size: 2rem;
-            line-height: 2.5rem;
-            font-weight: bold;
-        }
-
-        footer{
-            font-size: 0.7rem;
-            line-height: 1rem;
-        }
-
-        header, footer{
-            background-color: black;
-            color: white;
-        }
-
-        main{
-            height: calc(100vh - 3.5rem);
-        }
-
-        /* Always set the map height explicitly to define the size of the div
-         * element that contains the map. */
-        textarea, select, input, button { outline: none; }
-
-        #map {
-            height: 100%;
-            width: 100%;
-
-        }
-        /* Optional: Makes the sample page fill the window. */
-        html, body {
-            height: 100%;
-            width: 100%;
-            margin: 0;
-            padding: 0;
-        }
-
-
-
-        #pac-input{
-            width: 80%;
-            height: 3rem;
-            margin-left: 10%;
-            margin-top: 2rem;
-            font-size:1rem;
-            text-align:center;
-
-            outline: none;
-            border: 1px solid transparent;
-            border-radius: 2px 2px 2px 2px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-
-
-        }
-        #pac-input:focus{
-            border-color: #4d90fe;
-        }
-
-        #content {
-            text-align: center;
-        }
-
-        #chooseDestination{
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-        }
-
-    </style>
+    <title>Map Test</title>
 </head>
 <body>
 <header>Smart Commute</header>
 <main>
-<input id="pac-input" class="controls" type="text"  size="25" placeholder="Enter your destination...">
-<div id="map"></div>
+    <input id="pac-input" class="controls" type="text" size="25" placeholder="Enter your destination...">
+    <div id="map"></div>
 </main>
 <footer>Created by Group S 2019</footer>
 <script type="text/javascript" src="Javascript/map.js"></script>
