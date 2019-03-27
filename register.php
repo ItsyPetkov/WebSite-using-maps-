@@ -9,6 +9,8 @@
     <title>Registration Page</title>
 </head>
 <body>
+<header>Smart Commute</header>
+<main>
     <div class="container slected-user-container">
         <div class="row">
             <div class="col-12">
@@ -111,6 +113,8 @@
     }
     ?>
 </div>
+</main>
+<footer>Created by Group S 2019</footer>
 <script src="bootStrapJavaScript/jquery-3.3.1.min.js"></script>
 <script src="bootStrapJavaScript/bootstrap.min.js"></script>
 <script>

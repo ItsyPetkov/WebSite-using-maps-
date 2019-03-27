@@ -113,7 +113,8 @@ elseif(isset($_POST["pwdreset"])) {
     <title>Log in Authentication Page</title>
 </head>
 <body>
-
+<header>Smart Commute</header>
+<main>
 <div class="container text-center">
     <div class="row">
         <div class="col-12">
@@ -160,7 +161,8 @@ elseif(isset($_POST["pwdreset"])) {
         </div>
     </div>
 </div>
-
+</main>
+<footer>Created by Group S 2019</footer>
 <script src="bootStrapJavaScript/jquery-3.3.1.min.js"></script>
 <script src="bootStrapJavaScript/bootstrap.min.js"></script>
 <script>
