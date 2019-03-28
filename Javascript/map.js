@@ -1,9 +1,12 @@
 var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 var labelIndex = 0;
+var searchBox;
+var markers = [];
+var map;
 
 /*Code modified from Google Maps JS API Documentation: https://developers.google.com/maps/documentation/javascript/examples/places-searchbox */
 function initMap() {
-    var map = new google.maps.Map(document.getElementById('map'), {
+    map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 55.8642, lng: -4.255},
         zoom: 14,
         mapTypeId: 'roadmap',
@@ -20,26 +23,24 @@ function initMap() {
     var bike2 = new google.maps.Marker({position: bikeLoc2, map: map, icon: bikeImage});
     var bike3 = new google.maps.Marker({position: bikeLoc3, map: map, icon: bikeImage});
 
-
-    // Create the search box and link it to the UI element.
     var input = document.getElementById('pac-input');
-
-    var searchBox = new google.maps.places.SearchBox(input);
+    searchBox = new google.maps.places.SearchBox(input);
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
     // Bias the SearchBox results towards current map's viewport.
     map.addListener('bounds_changed', function () {
         searchBox.setBounds(map.getBounds());
     });
+
     google.maps.event.addListener(map, 'click', function (event) {
         addMarker(event.latLng, map);
     });
 
-
-    var markers = [];
     // Listen for the event fired when the user selects a prediction and retrieve
     // more details for that place.
-    searchBox.addListener('places_changed', addPlaces());
+    searchBox.addListener('places_changed', function () {
+        addPlaces(searchBox, map);
+    });
 }
 
 function addMarker(location, map) {
@@ -72,18 +73,18 @@ function addLocationMarker() {
         handleLocationError(false, infoWindow, map.getCenter());
     }
 
-function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-    infoWindow.setPosition(pos);
-    infoWindow.setContent(browserHasGeolocation ?
-        'Error: The Geolocation service failed.' :
-        'Error: Your browser doesn\'t support geolocation.');
-    infoWindow.open(map);
-}
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+            'Error: The Geolocation service failed.' :
+            'Error: Your browser doesn\'t support geolocation.');
+        infoWindow.open(map);
+    }
 }
 
-function addPlaces() {
+function addPlaces(searchBox, map   ) {
     var places = searchBox.getPlaces();
-
+    console.log(places);
     if (places.length == 0) {
         return;
     }
@@ -116,12 +117,11 @@ function addPlaces() {
             });
 
             var contentString = '<div id="content">' +
-
                 '<h1 id="firstHeading" class="firstHeading">' + place.name + '</h1>' +
                 '</div>' +
                 '<div id="bodyContent">' +
-                '<input id="chooseDestination" type="submit" value="Travel here by bike" >';
-            '</div>';
+                '<input id="chooseDestination" type="submit" value="Travel here by bike" >' +
+                '</div>';
 
             var infowindow = new google.maps.InfoWindow({
                 content: contentString
@@ -130,15 +130,12 @@ function addPlaces() {
             markers.push(newMarker);
             infowindow.open(map, newMarker);
 
-
             if (place.geometry.viewport) {
                 // Only geocodes have viewport.
                 bounds.union(place.geometry.viewport);
             } else {
                 bounds.extend(place.geometry.location);
             }
-
-
         })
     }
     else if (places.length > 1) {
@@ -168,19 +165,17 @@ function addPlaces() {
             newMarker.addListener('click', function () {
 
                 var contentString = '<div id="content">' +
-
                     '<h1 id="firstHeading" class="firstHeading">' + place.name + '</h1>' +
                     '</div>' +
                     '<div id="bodyContent">' +
-                    '<input id="chooseDestination" type="submit" value="Travel here by bike" >';
-                '</div>';
+                    '<input id="chooseDestination" type="submit" value="Travel here by bike" >' +
+                    '</div>';
 
                 var infowindow = new google.maps.InfoWindow({
                     content: contentString
                 });
 
                 infowindow.open(map, newMarker);
-
             });
 
 
@@ -194,9 +189,7 @@ function addPlaces() {
             markers.push(newMarker)
         })
     }
-    ;
 
     map.fitBounds(bounds);
-
 }
 
