@@ -20,14 +20,12 @@ function initMap() {
     });
 
     directionsDisplay.setMap(map);
-    //image doesn't exist
-    var bikeImage = 'bike.png';
+    var bikeImage = 'images/bike.png';
 
     var bikeLoc1 = {lat: 55.861456, lng: -4.250709};
     var bikeLoc2 = {lat: 55.865984, lng: -4.268251};
     var bikeLoc3 = {lat: 55.859925, lng: -4.256963};
-
-    var bike1 = new google.maps.Marker({position: bikeLoc1, map: map, title: 'Bike 1', icon: bikeImage});
+    var bike1 = new google.maps.Marker({position: bikeLoc1, map: map, icon: bikeImage});
     var bike2 = new google.maps.Marker({position: bikeLoc2, map: map, icon: bikeImage});
     var bike3 = new google.maps.Marker({position: bikeLoc3, map: map, icon: bikeImage});
 
@@ -226,7 +224,7 @@ function travelHere() {
             directionsService.route({
                 origin: currentPos,
                 destination: travelHereMarker[0].position,
-                travelMode: 'BICYCLING'
+                travelMode: 'CYCLING'
             }, function (response, status) {
                 if (status === 'OK') {
                     directionsDisplay.setDirections(response);
