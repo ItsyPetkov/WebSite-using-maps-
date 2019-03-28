@@ -206,7 +206,7 @@ function travelHerePlace(place, map, marker) {
         '<h1 id="firstHeading" class="firstHeading">' + place.name + '</h1>' +
         '</div>' +
         '<div id="bodyContent">' +
-        '<input id="chooseDestination" type="button" value="Travel here  by bike" onclick="travelHere()" >' +
+        '<input id="chooseDestination" type="button" value="Travel here by bike" onclick="travelHere()" >' +
         '</div>';
 
     var infowindow = new google.maps.InfoWindow({
