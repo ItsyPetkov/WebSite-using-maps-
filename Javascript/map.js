@@ -289,4 +289,5 @@ function calcCost(bikeLoc, destLoc) {
         avgc: avgCost,
         avgt: avgTime
     };
+    console.log("change something and then push");
 }
