@@ -2,16 +2,24 @@ var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 var labelIndex = 0;
 var searchBox;
 var markers = [];
+var travelHereMarker = [];
 var map;
+
+var directionsService;
+var directionsDisplay;
 
 /*Code modified from Google Maps JS API Documentation: https://developers.google.com/maps/documentation/javascript/examples/places-searchbox */
 function initMap() {
+    directionsService = new google.maps.DirectionsService;
+    directionsDisplay = new google.maps.DirectionsRenderer;
     map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 55.8642, lng: -4.255},
         zoom: 14,
         mapTypeId: 'roadmap',
         disableDefaultUI: true
     });
+
+    directionsDisplay.setMap(map);
     //image doesn't exist
     var bikeImage = 'bike.png';
 
@@ -33,7 +41,7 @@ function initMap() {
     });
 
     google.maps.event.addListener(map, 'click', function (event) {
-        addMarker(event.latLng, map);
+        addMarker(event.latLng, map, travelHereMarker);
     });
 
     // Listen for the event fired when the user selects a prediction and retrieve
@@ -43,14 +51,8 @@ function initMap() {
     });
 }
 
-function addMarker(location, map) {
-    // Add the marker at the clicked location, and add the next-available label
-    // from the array of alphabetical characters.
-    var marker = new google.maps.Marker({
-        position: location,
-        label: labels[labelIndex++ % labels.length],
-        map: map
-    });
+function addMarker(location, map, marker) {
+    travelHereLocation(location, map, marker);
 }
 
 function addLocationMarker() {
@@ -100,35 +102,7 @@ function addPlaces(searchBox, map) {
 
     if (places.length == 1) {
         places.forEach(function (place) {
-            var icon = {
-                url: place.icon,
-                size: new google.maps.Size(71, 71),
-                origin: new google.maps.Point(0, 0),
-                anchor: new google.maps.Point(17, 34),
-                scaledSize: new google.maps.Size(25, 25)
-            };
-
-            // Create a marker for each place.
-            var newMarker = new google.maps.Marker({
-                map: map,
-                icon: icon,
-                title: place.name,
-                position: place.geometry.location
-            });
-
-            var contentString = '<div id="content">' +
-                '<h1 id="firstHeading" class="firstHeading">' + place.name + '</h1>' +
-                '</div>' +
-                '<div id="bodyContent">' +
-                '<input id="chooseDestination" type="submit" value="Travel here by bike" >' +
-                '</div>';
-
-            var infowindow = new google.maps.InfoWindow({
-                content: contentString
-            });
-
-            markers.push(newMarker);
-            infowindow.open(map, newMarker);
+            travelHerePlace(place, map, travelHereMarker);
 
             if (place.geometry.viewport) {
                 // Only geocodes have viewport.
@@ -163,19 +137,7 @@ function addPlaces(searchBox, map) {
             });
 
             newMarker.addListener('click', function () {
-
-                var contentString = '<div id="content">' +
-                    '<h1 id="firstHeading" class="firstHeading">' + place.name + '</h1>' +
-                    '</div>' +
-                    '<div id="bodyContent">' +
-                    '<input id="chooseDestination" type="submit" value="Travel here by bike" >' +
-                    '</div>';
-
-                var infowindow = new google.maps.InfoWindow({
-                    content: contentString
-                });
-
-                infowindow.open(map, newMarker);
+                travelHerePlace(place, map, travelHereMarker);
             });
 
 
@@ -193,3 +155,85 @@ function addPlaces(searchBox, map) {
     map.fitBounds(bounds);
 }
 
+function travelHereLocation(location, map, marker) {
+    if (marker[0] != null)
+        marker[0].setMap(null);
+
+    var newMarker = new google.maps.Marker({
+        position: location,
+        label: "",
+        map: map
+    });
+
+    var contentString = '<div id="content">' +
+        '<h1 id="firstHeading" class="firstHeading">' + '</h1>' +
+        '</div>' +
+        '<div id="bodyContent">' +
+        '<input id="chooseDestination" type="button" value="Travel here by bike" onclick="travelHere()" >' +
+        '</div>';
+
+    var infowindow = new google.maps.InfoWindow({
+        content: contentString
+    });
+
+    marker[0] = newMarker;
+    infowindow.open(map, newMarker);
+}
+
+function travelHerePlace(place, map, marker) {
+    if (marker[0] != null)
+        marker[0].setMap(null);
+
+    var icon = {
+        url: place.icon,
+        size: new google.maps.Size(71, 71),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(17, 34),
+        scaledSize: new google.maps.Size(25, 25)
+    };
+
+    // Create a marker for each place.
+    var newMarker = new google.maps.Marker({
+        map: map,
+        icon: icon,
+        title: place.name,
+        position: place.geometry.location
+    });
+
+    var contentString = '<div id="content">' +
+        '<h1 id="firstHeading" class="firstHeading">' + place.name + '</h1>' +
+        '</div>' +
+        '<div id="bodyContent">' +
+        '<input id="chooseDestination" type="button" value="Travel here by bike" onclick="travelHere()" >' +
+        '</div>';
+
+    var infowindow = new google.maps.InfoWindow({
+        content: contentString
+    });
+
+    marker[0] = newMarker;
+
+    infowindow.open(map, newMarker);
+}
+
+function travelHere() {
+    if (navigator.geolocation) {
+        var currentPos;
+
+        navigator.geolocation.getCurrentPosition(function (position) {
+            currentPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+            directionsService.route({
+                origin: currentPos,
+                destination: travelHereMarker[0].position,
+                travelMode: 'BICYCLING'
+            }, function (response, status) {
+                if (status === 'OK') {
+                    directionsDisplay.setDirections(response);
+                } else {
+                    window.alert('Directions request failed due to ' + status);
+                }
+            });
+        });
+    }
+}
