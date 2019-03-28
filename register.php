@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width-device-width, initial-scale-1.0">
     <link href="bootStrapCSS/bootstrap.min.css" rel="stylesheet">
-    <link href="register.css" rel="stylesheet">
+    <link href="CSS/register.css" rel="stylesheet">
     <title>Registration Page</title>
 </head>
 <body>
