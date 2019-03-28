@@ -82,9 +82,9 @@ function addLocationMarker() {
     }
 }
 
-function addPlaces(searchBox, map   ) {
+function addPlaces(searchBox, map) {
     var places = searchBox.getPlaces();
-    console.log(places);
+
     if (places.length == 0) {
         return;
     }
