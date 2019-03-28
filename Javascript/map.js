@@ -8,7 +8,8 @@ var bikeLoc1 = {lat: 55.861456, lng: -4.250709};
 var bikeLoc2 = {lat: 55.865984, lng: -4.268251};
 var bikeLoc3 = {lat: 55.859925, lng: -4.256963};
 var marker = [];
-
+var goalStation;
+var infoWindow;
 
 var directionsService;
 var directionsDisplay;
@@ -150,7 +151,10 @@ function travelHereLocation(location, map, marker) {
         }
     });
 }
+function setGoal() {
+    infoWindow.close();
 
+}
 function travelHerePlace(place, map, marker) {
     if (marker[0] != null)
         marker[0].setMap(null);
@@ -175,10 +179,10 @@ function travelHerePlace(place, map, marker) {
         '<h1 id="firstHeading" class="firstHeading">' + (place.name === undefined ? place.formatted_address : place.name) + '</h1>' +
         '</div>' +
         '<div id="bodyContent">' +
-        '<input id="chooseDestination" type="button" value="Travel here by bike" onclick="" >' +
+        '<input id="chooseDestination" type="button" value="Confirm" onclick="setGoal()" >' +
         '</div>';
 
-    var infowindow = new google.maps.InfoWindow({
+     infowindow = new google.maps.InfoWindow({
         content: contentString
     });
 
@@ -191,6 +195,10 @@ function moveStickMan() {
     var stickmanIcon = 'images/stickman.png';
     navigator.geolocation.getCurrentPosition(function (position) {
         currentPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        if(goalStation !== undefined && google.maps.geometry.spherical.computeDistanceBetween(currentPos, goalStation) <= 10){
+            //an alert :D;
+        }
+
         var icon = {
             url: stickmanIcon,
             size: new google.maps.Size(71, 71),
@@ -260,7 +268,7 @@ function travelHere() {
         }, function (response, status) {
             if (status === 'OK') {
                 directionsDisplay.setDirections(response);
-            } 
+            }
         });
     });
 }
