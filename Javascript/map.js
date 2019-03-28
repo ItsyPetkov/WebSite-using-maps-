@@ -12,7 +12,7 @@ var infoWindow;
 
 var directionsService;
 var directionsDisplay;
-
+var contentString;
 /*Code modified from Google Maps JS API Documentation: https://developers.google.com/maps/documentation/javascript/examples/places-searchbox */
 function initMap() {
     if (navigator.geolocation) {
@@ -182,7 +182,8 @@ function travelHerePlace(place, map, marker) {
         position: place.geometry.location
     });
     travelHere();
-    var contentString = '<div id="content">' +
+
+    contentString = '<div id="content">' +
         '<h1 id="firstHeading" class="firstHeading">' + (place.name === undefined ? place.formatted_address : place.name) + '</h1>' +
         '</div>' +
         '<div id="bodyContent">' +
@@ -257,7 +258,31 @@ function travelHere() {
         }, function (response, status) {
             if (status === 'OK') {
                 directionsDisplay.setDirections(response);
+                calcCost(bikeStation[0].location, travelHereMarker[0].position)
             }
         });
     });
+}
+
+
+function calcCost(bikeLoc, destLoc) {
+    var distance = google.maps.geometry.spherical.computeDistanceBetween(bikeLoc, destLoc)/1000;
+    var estTime = ((distance/15)*60);
+    var baseCost = 1.0;
+    if (distance>0 && distance<=1){
+        costMultiplier = 1;
+    } else if (distance>1 && distance<=2){
+        costMultiplier = 0.9;
+    } else if (distance>2 && distance<=5){
+        costMultiplier = 0.7;
+    } else if (distance>5 ){
+        costMultiplier = 0.5;
+    }
+    var rate = baseCost * costMultiplier;
+    var avgCost = (Math.ceil(estTime/30))*rate;
+    var avgTime = Math.round(estTime, 2);
+    alert(rate + "£ per 30 mins and the journey will take aprox: " + Math.round(estTime, 2) + " mins and cost around: " + (Math.ceil(estTime/30))*rate )
+
+
+    alert(destLoc)
 }
