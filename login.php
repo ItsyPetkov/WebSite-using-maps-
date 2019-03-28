@@ -49,14 +49,8 @@ if(isset($_POST['LogIn'])) {
                 $_SESSION['id'] = $row['id'];
                 $_SESSION['name'] = $row['username'];
                 $_SESSION['email'] = $email;
-//                if ($row['institute'] == null) {
-//                    $_SESSION['user-type'] = 'normal';
-//                    header("location:userhome.php");
-//                } else {
-//                    $_SESSION['user-type'] = 'owner';
-//                    $_SESSION['inst'] = $row['institute'];
-//                    header("location:ownerhome.php");
-//                }
+
+                header("location:Home.html");
 
                 $_SESSION['logged-in'] = true;
             }
@@ -109,17 +103,16 @@ elseif(isset($_POST["pwdreset"])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width-device-width, initial-scale-1.0">
     <link href="bootStrapCSS/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="CSS/login.css"/>
+    <link rel="stylesheet" type="text/css" href="login.css"/>
     <title>Log in Authentication Page</title>
 </head>
 <body>
-<header>Smart Commute</header>
-<main>
+<!--<header>Smart Commute</header>-->
 <div class="container text-center">
     <div class="row">
         <div class="col-12">
             <div class="header">
-                <h1>Login to our website</h1>
+                <h1>Login to our app</h1>
                 <p>In order to login to your account, please fill in the following</p>
             </div>
         </div>
@@ -129,14 +122,14 @@ elseif(isset($_POST["pwdreset"])) {
             <form class="needs-validation" novalidate action="" method="post">
                 <div class="form-group row">
                     <div class="col-md-4 offset-md-4 mb-3">
-                        <input type="text" class="form-control" name="email" id="email" placeholder="Email address" autocomplete="off" value="<?php echo $email; ?>" required>
+                        <input type="text" class="form-control" name="email" id="email" style="width: 500px; margin-left: -140px;" placeholder="Email address" autocomplete="off" value="<?php echo $email; ?>" required>
                         <div class="invalid-feedback">Please, enter an email!</div>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <div class="col-md-4 offset-md-4 mb-3">
-                        <input type="password" class="form-control" name="password" id="password" placeholder="Password" autocomplete="off" value="<?php if(isset($_POST['Register'])){echo $_POST['password'];} ?>" required>
+                        <input type="password" class="form-control" name="password" id="password" style="width: 500px; margin-left: -140px;" placeholder="Password" autocomplete="off" value="<?php if(isset($_POST['Register'])){echo $_POST['password'];} ?>" required>
                         <div class="invalid-feedback">Please, enter a password!</div>
                     </div>
                 </div>
@@ -161,8 +154,7 @@ elseif(isset($_POST["pwdreset"])) {
         </div>
     </div>
 </div>
-</main>
-<footer>Created by Group S 2019</footer>
+<!--<footer>Created by Group S 2019</footer>-->
 <script src="bootStrapJavaScript/jquery-3.3.1.min.js"></script>
 <script src="bootStrapJavaScript/bootstrap.min.js"></script>
 <script>
