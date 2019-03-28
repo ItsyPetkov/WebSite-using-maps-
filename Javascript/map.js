@@ -4,30 +4,34 @@ var searchBox;
 var markers = [];
 var travelHereMarker = [];
 var map;
+var bikeLoc1 = {lat: 55.861456, lng: -4.250709};
+var bikeLoc2 = {lat: 55.865984, lng: -4.268251};
+var bikeLoc3 = {lat: 55.859925, lng: -4.256963};
+
 
 var directionsService;
 var directionsDisplay;
 
 /*Code modified from Google Maps JS API Documentation: https://developers.google.com/maps/documentation/javascript/examples/places-searchbox */
 function initMap() {
-    directionsService = new google.maps.DirectionsService;
-    directionsDisplay = new google.maps.DirectionsRenderer;
     map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 55.8642, lng: -4.255},
         zoom: 14,
         mapTypeId: 'roadmap',
         disableDefaultUI: true
     });
+    directionsService = new google.maps.DirectionsService;
+    directionsDisplay = new google.maps.DirectionsRenderer;
 
     directionsDisplay.setMap(map);
     var bikeImage = 'images/bike.png';
 
-    var bikeLoc1 = {lat: 55.861456, lng: -4.250709};
-    var bikeLoc2 = {lat: 55.865984, lng: -4.268251};
-    var bikeLoc3 = {lat: 55.859925, lng: -4.256963};
+
+
     var bike1 = new google.maps.Marker({position: bikeLoc1, map: map, icon: bikeImage});
     var bike2 = new google.maps.Marker({position: bikeLoc2, map: map, icon: bikeImage});
     var bike3 = new google.maps.Marker({position: bikeLoc3, map: map, icon: bikeImage});
+
 
     var input = document.getElementById('pac-input');
     searchBox = new google.maps.places.SearchBox(input);
@@ -202,7 +206,7 @@ function travelHerePlace(place, map, marker) {
         '<h1 id="firstHeading" class="firstHeading">' + place.name + '</h1>' +
         '</div>' +
         '<div id="bodyContent">' +
-        '<input id="chooseDestination" type="button" value="Travel here by bike" onclick="travelHere()" >' +
+        '<input id="chooseDestination" type="button" value="Travel here  by bike" onclick="travelHere()" >' +
         '</div>';
 
     var infowindow = new google.maps.InfoWindow({
@@ -214,17 +218,77 @@ function travelHerePlace(place, map, marker) {
     infowindow.open(map, newMarker);
 }
 
+function moveStickMan(map) {
+    var stickmanIcon = 'images/stickman.png';
+    navigator.geolocation.getCurrentPosition(function (position) {
+        currentPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        var icon = {
+            url: stickmanIcon,
+            size: new google.maps.Size(71, 71),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(17, 34),
+            scaledSize: new google.maps.Size(25, 25)
+        };
+
+        // Create a marker for each place.
+        var newMarker = new google.maps.Marker({
+            map: map,
+            icon: icon,
+            title: place.name,
+            position: currentPos
+        });
+    });
+}
+
 function travelHere() {
     if (navigator.geolocation) {
+        setInterval(moveStickMan(map),5);
         var currentPos;
+        var latlang1 = new google.maps.LatLng(bikeLoc1.lat, bikeLoc1.lng);
+        var latlang2 = new google.maps.LatLng(bikeLoc2.lat, bikeLoc2.lng);
+        var latlang3 = new google.maps.LatLng(bikeLoc3.lat, bikeLoc3.lng);
+        console.log(latlang1);
+        console.log(latlang2);
+        console.log(latlang3);
+        var bikeStation = [];
 
         navigator.geolocation.getCurrentPosition(function (position) {
             currentPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            var dist1 = google.maps.geometry.spherical.computeDistanceBetween(currentPos, latlang1);
+            var dist2 = google.maps.geometry.spherical.computeDistanceBetween(currentPos, latlang2);
+            var dist3 = google.maps.geometry.spherical.computeDistanceBetween(currentPos, latlang3);
+            if (dist1 <= dist2) {
+                if (dist1 <= dist3) {
+                    bikeStation.push({
+                        location: latlang1,
+                        stopover: true
+                    })
+                } else {
+                    bikeStation.push({
+                        location: latlang3,
+                        stopover: true
+                    });
+                }
+            } else {
+                if (dist2 <= dist3) {
+                    bikeStation.push({
+                        location: latlang2,
+                        stopover: true
+                    });
+                } else {
+                    bikeStation.push({
+                        location: latlang3,
+                        stopover: true
+                    });
+                }
+            }
+            console.log(bikeStation);
 
             directionsService.route({
                 origin: currentPos,
+                waypoints: bikeStation,
                 destination: travelHereMarker[0].position,
-                travelMode: 'CYCLING'
+                travelMode: 'BICYCLING'
             }, function (response, status) {
                 if (status === 'OK') {
                     directionsDisplay.setDirections(response);
