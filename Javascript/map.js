@@ -167,7 +167,9 @@ function travelHerePlace(place, map, marker) {
         marker[0].setMap(null);
 
     var icon_ = place.icon === undefined ? 'images/bike.png' : place.icon;
-    console.log(place);
+
+    travelHere((place.name === undefined ? place.formatted_address : place.name), marker);
+
     var icon = {
         url: icon_,
         size: new google.maps.Size(71, 71),
@@ -175,13 +177,11 @@ function travelHerePlace(place, map, marker) {
         anchor: new google.maps.Point(17, 34),
         scaledSize: new google.maps.Size(25, 25)
     };
-
     // Create a marker for each place.
     var newMarker = new google.maps.Marker({
         map: map,
         position: place.geometry.location
     });
-    travelHere();
 
     contentString = '<div id="content">' +
         '<h1 id="firstHeading" class="firstHeading">' + (place.name === undefined ? place.formatted_address : place.name) + '</h1>' +
@@ -226,7 +226,7 @@ function moveStickMan() {
     });
 }
 
-function travelHere() {
+function travelHere(name, marker) {
     var currentPos;
     var latlang = [];
     bikeLoc.forEach(function (bike) {
@@ -257,6 +257,7 @@ function travelHere() {
             travelMode: 'BICYCLING'
         }, function (response, status) {
             if (status === 'OK') {
+                marker[0].setMap(null);
                 directionsDisplay.setDirections(response);
                 calcCost(bikeStation[0].location, travelHereMarker[0].position)
             }
