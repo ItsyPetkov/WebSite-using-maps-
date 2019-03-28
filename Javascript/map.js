@@ -3,7 +3,7 @@ var markers = [];
 var travelHereMarker = [];
 var map;
 var bikeLoc = [];
-
+var bikeLocations = [];
 var goals = [];
 var marker = [];
 var infoWindow_;
@@ -155,8 +155,10 @@ function travelHereLocation(location, map, marker) {
 }
 
 function setGoal() {
-    goals.push(marker[0]);
-    goals.push(travelHereMarker[0]);
+    console.log(bikeLocations[0]);
+    console.log(travelHereMarker[0].position);
+    goals.push(bikeLocations[0]);
+    goals.push(travelHereMarker[0].position);
     infoWindow_.close();
     globalBoolean = true;
 
@@ -190,14 +192,15 @@ function moveStickMan() {
     var stickmanIcon = 'images/stickman.png';
     navigator.geolocation.getCurrentPosition(function (position) {
         currentPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        if (goals[0] !== undefined && google.maps.geometry.spherical.computeDistanceBetween(currentPos, goals[0]) <= 100) {
+        if (goals.length !== 0 && google.maps.geometry.spherical.computeDistanceBetween(currentPos, goals[0]) <= 100) {
+            alert("sadsad");
             var content = '<div id="content">' +
 						'<input id="confirmRental" type="button" value="Confirm Rental" onclick="goals.shift()" >' +
 						'</div>';
              infoWindow_ = new google.maps.InfoWindow({
                 content: content
             });
-            infoWindow_.open(map, goals[0].location);
+            infoWindow_.open(map, marker[0]);
         }
 
         var icon = {
@@ -230,7 +233,7 @@ function travelHere(map, name, marker) {
 
     navigator.geolocation.getCurrentPosition(function (position) {
         currentPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-
+        bikeLocations = [];
         var distance;
         var location;
         latlang.forEach(function (latlng) {
@@ -239,8 +242,9 @@ function travelHere(map, name, marker) {
                 distance = dist_;
                 location = latlng;
             }
-        });
 
+        });
+        bikeLocations.push(location);
         bikeStation.push({location: location, stopover: true});
 
         directionsService.route({
