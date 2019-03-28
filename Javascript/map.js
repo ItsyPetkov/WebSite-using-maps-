@@ -68,7 +68,6 @@ function addMarker(location, map, marker) {
     travelHereLocation(location, map, marker);
 }
 
-
 function addPlaces(searchBox, map) {
     var places = searchBox.getPlaces();
 
@@ -142,7 +141,7 @@ function addPlaces(searchBox, map) {
 }
 
 function travelHereLocation(location, map, marker) {
-    if(!globalBoolean) {
+    if (!globalBoolean) {
         var geocoder = new google.maps.Geocoder;
         geocoder.geocode({'location': location}, function (results, status) {
             if (status === 'OK')
@@ -193,11 +192,13 @@ function moveStickMan() {
     navigator.geolocation.getCurrentPosition(function (position) {
         currentPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         if (goals.length !== 0 && google.maps.geometry.spherical.computeDistanceBetween(currentPos, goals[0]) <= 100) {
-            alert("sadsad");
+            goals.shift();
             var content = '<div id="content">' +
-						'<input id="confirmRental" type="button" value="Confirm Rental" onclick="goals.shift()" >' +
-						'</div>';
-             infoWindow_ = new google.maps.InfoWindow({
+                '<input id="confirmRental" type="button" value="Confirm Rental" onclick="infoWindow_.setMap(null);" >' +
+                '</div>' +
+                '<div id="bodyContent">' +
+                '</div>';
+            infoWindow_ = new google.maps.InfoWindow({
                 content: content
             });
             infoWindow_.open(map, marker[0]);
@@ -212,13 +213,14 @@ function moveStickMan() {
         };
 
         // Create a marker for each place.
-        if (marker[0] != null)
-            marker[0].setMap(null);
-        marker[0] = new google.maps.Marker({
-            map: map,
-            icon: icon,
-            position: currentPos
-        });
+        if (marker[0] == null)
+            marker[0] = new google.maps.Marker({
+                map: map,
+                icon: icon,
+                position: currentPos
+            });
+        else
+            marker[0].setPosition(currentPos);
     });
 }
 
@@ -265,14 +267,13 @@ function travelHere(map, name, marker) {
 }
 
 function infoWindow(map, name, marker, object) {
-
     contentString = '<div id="content">' +
         '<h1 id="firstHeading" class="firstHeading">' + name + '</h1>' +
         '</div>' +
         '<div id="bodyContent">' +
-        '<p>' +'Rate £' + object.rate + ' / 30 mins</p>' +
-        '<p>' +'Estimated time ' + object.avgt + ' min(s)</p>' +
-        '<p>' +'Estimated cost £' + object.avgc + '</p>' +
+        '<p>' + 'Rate £' + object.rate + ' / 30 mins</p>' +
+        '<p>' + 'Estimated time ' + object.avgt + ' min(s)</p>' +
+        '<p>' + 'Estimated cost £' + object.avgc + '</p>' +
         '<input id="chooseDestination" type="button" value="Confirm" onclick="setGoal()" >' +
         '</div>';
     infoWindow_ = new google.maps.InfoWindow({
