@@ -190,14 +190,14 @@ function moveStickMan() {
     var stickmanIcon = 'images/stickman.png';
     navigator.geolocation.getCurrentPosition(function (position) {
         currentPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        if (goalStation !== undefined && google.maps.geometry.spherical.computeDistanceBetween(currentPos, goalStation) <= 100) {
+        if (goals[0] !== undefined && google.maps.geometry.spherical.computeDistanceBetween(currentPos, goals[0]) <= 100) {
             var content = '<div id="content">' +
-						'<input id="confirmRental" type="button" value="Confirm Rental" onclick="alert("Bike rental confirmed")" >' +
+						'<input id="confirmRental" type="button" value="Confirm Rental" onclick="goals.shift()" >' +
 						'</div>';
-            infowindow = new google.maps.InfoWindow({
+             infoWindow_ = new google.maps.InfoWindow({
                 content: content
             });
-            infowindow.open(map, goals[0].location);
+            infoWindow_.open(map, goals[0].location);
         }
 
         var icon = {
