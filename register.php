@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width-device-width, initial-scale-1.0">
     <link href="bootStrapCSS/bootstrap.min.css" rel="stylesheet">
-    <link href="CSS/register.css" rel="stylesheet">
+    <link href="register.css" rel="stylesheet">
     <title>Registration Page</title>
 </head>
 <body>
@@ -24,9 +24,9 @@
             <div class="col-12">
                 <form class="needs-validation" novalidate action="" method="post">
                     <div class="form-group row">
-                        <label for="name" class="col-sm-2 col-form-label">Name:</label>
+<!--                        <label for="name" class="col-sm-2 col-form-label">Name:</label>-->
                         <div class="col-md-6 mb-3">
-                            <input type="text" class="form-control" name="name" id="name" placeholder="Please enter a name." autocomplete="off" value="<?php if(isset($_POST['Register'])){echo $_POST['name'];} ?>" required>
+                            <input type="text" class="form-control" name="name" id="name" style="width: 620px; margin-left: 30px;" placeholder="Please enter a name." autocomplete="off" value="<?php if(isset($_POST['Register'])){echo $_POST['name'];} ?>" required>
                             <div class="invalid-feedback">
                                 Please, enter a name.
                             </div>
@@ -34,9 +34,9 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="email" class="col-sm-2 col-form-label">E-Mail:</label>
+<!--                        <label for="email" class="col-sm-2 col-form-label">E-Mail:</label>-->
                         <div class="col-md-6 mb-3">
-                            <input type="text" class="form-control" name="email" id="email" placeholder="Please enter an email." autocomplete="off" value="<?php if(isset($_POST['Register'])){echo $_POST['email'];} ?>" required>
+                            <input type="text" class="form-control" name="email" id="email" style="width: 620px; margin-left: 30px;" placeholder="Please enter an email." autocomplete="off" value="<?php if(isset($_POST['Register'])){echo $_POST['email'];} ?>" required>
                             <div class="invalid-feedback">
                                 Please, enter an email.
                             </div>
@@ -44,9 +44,9 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="password" class="col-sm-2 col-form-label">Password:</label>
+<!--                        <label for="password" class="col-sm-2 col-form-label">Password:</label>-->
                         <div class="col-md-6 mb-3">
-                            <input type="password" class="form-control" name="password" id="password" placeholder="Please enter a password." autocomplete="off" value="<?php if(isset($_POST['Register'])){echo $_POST['password'];} ?>" required>
+                            <input type="password" class="form-control" name="password" id="password" style="width: 620px; margin-left: 30px;" placeholder="Please enter a password." autocomplete="off" value="<?php if(isset($_POST['Register'])){echo $_POST['password'];} ?>" required>
                             <div class="invalid-feedback">
                                 Please, enter a password.
                             </div>
@@ -99,8 +99,9 @@
                 if (mysqli_num_rows($result) == 1) {
                     echo "User already exists";
                 } else {
-                    $sql2 = "INSERT INTO `cs317mads`.`users` (`id`,`username`,`password`,`email`,`bike`) VALUES (NULL ,'$name', '$encryptedPassword', '$email', NULL);";
+                    $sql2 = "INSERT INTO `cs317mads`.`users` (`id`,`username`,`password`,`email`) VALUES (NULL ,'$name', '$encryptedPassword', '$email');";
                     if($result2 = $db->query($sql2)) {
+//                    if($db->query($sql2) === TRUE) {
                         header("location:login.php");
                     } else {
                         echo "Something went wrong with creating your account!";
@@ -170,7 +171,7 @@
     }
 
     // Get the element with id="defaultOpen" and click on it
-    document.getElementById("defaultOpen").click();
+    //document.getElementById("defaultOpen").click();
 </script>
 </body>
 </html>
