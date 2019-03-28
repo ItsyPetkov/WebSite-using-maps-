@@ -4,9 +4,8 @@ var searchBox;
 var markers = [];
 var travelHereMarker = [];
 var map;
-var bikeLoc1 = {lat: 55.861456, lng: -4.250709};
-var bikeLoc2 = {lat: 55.865984, lng: -4.268251};
-var bikeLoc3 = {lat: 55.859925, lng: -4.256963};
+var bikeLoc = [];
+
 var marker = [];
 var goalStation;
 var infoWindow;
@@ -18,6 +17,7 @@ var directionsDisplay;
 function initMap() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
+
             currentPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
             map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: position.coords.latitude, lng: position.coords.longitude},
@@ -29,13 +29,18 @@ function initMap() {
             directionsDisplay = new google.maps.DirectionsRenderer;
             setInterval(moveStickMan, 3000);
             directionsDisplay.setMap(map);
+
             var bikeImage = 'images/bike.png';
 
+            bikeLoc.push({lat: 55.861456, lng: -4.250709});
+            bikeLoc.push({lat: 55.865984, lng: -4.268251});
+            bikeLoc.push({lat: 55.859925, lng: -4.256963});
 
-            var bike1 = new google.maps.Marker({position: bikeLoc1, map: map, icon: bikeImage});
-            var bike2 = new google.maps.Marker({position: bikeLoc2, map: map, icon: bikeImage});
-            var bike3 = new google.maps.Marker({position: bikeLoc3, map: map, icon: bikeImage});
+            var bikes = [];
 
+            bikeLoc.forEach(function (bike) {
+                bikes.push(new google.maps.Marker({position: bike, map: map, icon: bikeImage}))
+            });
 
             var input = document.getElementById('pac-input');
             searchBox = new google.maps.places.SearchBox(input);
@@ -151,10 +156,12 @@ function travelHereLocation(location, map, marker) {
         }
     });
 }
+
 function setGoal() {
     infoWindow.close();
 
 }
+
 function travelHerePlace(place, map, marker) {
     if (marker[0] != null)
         marker[0].setMap(null);
@@ -182,7 +189,7 @@ function travelHerePlace(place, map, marker) {
         '<input id="chooseDestination" type="button" value="Confirm" onclick="setGoal()" >' +
         '</div>';
 
-     infowindow = new google.maps.InfoWindow({
+    infowindow = new google.maps.InfoWindow({
         content: contentString
     });
 
@@ -195,7 +202,7 @@ function moveStickMan() {
     var stickmanIcon = 'images/stickman.png';
     navigator.geolocation.getCurrentPosition(function (position) {
         currentPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        if(goalStation !== undefined && google.maps.geometry.spherical.computeDistanceBetween(currentPos, goalStation) <= 10){
+        if (goalStation !== undefined && google.maps.geometry.spherical.computeDistanceBetween(currentPos, goalStation) <= 10) {
             //an alert :D;
         }
 
@@ -220,45 +227,27 @@ function moveStickMan() {
 
 function travelHere() {
     var currentPos;
-    var latlang1 = new google.maps.LatLng(bikeLoc1.lat, bikeLoc1.lng);
-    var latlang2 = new google.maps.LatLng(bikeLoc2.lat, bikeLoc2.lng);
-    var latlang3 = new google.maps.LatLng(bikeLoc3.lat, bikeLoc3.lng);
-    console.log(latlang1);
-    console.log(latlang2);
-    console.log(latlang3);
+    var latlang = [];
+    bikeLoc.forEach(function (bike) {
+        latlang.push(new google.maps.LatLng(bike.lat, bike.lng));
+    });
+
     var bikeStation = [];
 
     navigator.geolocation.getCurrentPosition(function (position) {
         currentPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        var dist1 = google.maps.geometry.spherical.computeDistanceBetween(currentPos, latlang1);
-        var dist2 = google.maps.geometry.spherical.computeDistanceBetween(currentPos, latlang2);
-        var dist3 = google.maps.geometry.spherical.computeDistanceBetween(currentPos, latlang3);
-        if (dist1 <= dist2) {
-            if (dist1 <= dist3) {
-                bikeStation.push({
-                    location: latlang1,
-                    stopover: true
-                })
-            } else {
-                bikeStation.push({
-                    location: latlang3,
-                    stopover: true
-                });
+
+        var distance;
+        var location;
+        latlang.forEach(function (latlng) {
+            var dist_ = google.maps.geometry.spherical.computeDistanceBetween(currentPos, latlng);
+            if (distance === undefined || dist_ < distance) {
+                distance = dist_;
+                location = latlng;
             }
-        } else {
-            if (dist2 <= dist3) {
-                bikeStation.push({
-                    location: latlang2,
-                    stopover: true
-                });
-            } else {
-                bikeStation.push({
-                    location: latlang3,
-                    stopover: true
-                });
-            }
-        }
-        console.log(bikeStation);
+        });
+
+        bikeStation.push({location: location, stopover: true});
 
         directionsService.route({
             origin: currentPos,
