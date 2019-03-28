@@ -103,7 +103,7 @@ elseif(isset($_POST["pwdreset"])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width-device-width, initial-scale-1.0">
     <link href="bootStrapCSS/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="login.css"/>
+    <link rel="stylesheet" type="text/css" href="CSS/login.css"/>
     <title>Log in Authentication Page</title>
 </head>
 <body>
