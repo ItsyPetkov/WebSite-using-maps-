@@ -8,11 +8,13 @@ var bikeLoc = [];
 
 var marker = [];
 var goalStation;
-var infoWindow;
+var infoWindow_;
+var globalBoolean = false;
 
 var directionsService;
 var directionsDisplay;
 var contentString;
+
 /*Code modified from Google Maps JS API Documentation: https://developers.google.com/maps/documentation/javascript/examples/places-searchbox */
 function initMap() {
     if (navigator.geolocation) {
@@ -144,21 +146,16 @@ function addPlaces(searchBox, map) {
 function travelHereLocation(location, map, marker) {
     var geocoder = new google.maps.Geocoder;
     geocoder.geocode({'location': location}, function (results, status) {
-        if (status === 'OK') {
+        if (status === 'OK')
             if (results[0]) {
                 console.log(results[0]);
                 travelHerePlace(results[0], map, marker);
-            } else {
-                window.alert('No results found');
             }
-        } else {
-            window.alert('Geocoder failed due to: ' + status);
-        }
     });
 }
 
 function setGoal() {
-    infoWindow.close();
+    infoWindow_.close();
 
 }
 
@@ -168,7 +165,7 @@ function travelHerePlace(place, map, marker) {
 
     var icon_ = place.icon === undefined ? 'images/bike.png' : place.icon;
 
-    travelHere((place.name === undefined ? place.formatted_address : place.name), marker);
+    travelHere(map, (place.name === undefined ? place.formatted_address : place.name), marker);
 
     var icon = {
         url: icon_,
@@ -182,21 +179,8 @@ function travelHerePlace(place, map, marker) {
         map: map,
         position: place.geometry.location
     });
-
-    contentString = '<div id="content">' +
-        '<h1 id="firstHeading" class="firstHeading">' + (place.name === undefined ? place.formatted_address : place.name) + '</h1>' +
-        '</div>' +
-        '<div id="bodyContent">' +
-        '<input id="chooseDestination" type="button" value="Confirm" onclick="setGoal()" >' +
-        '</div>';
-
-    infowindow = new google.maps.InfoWindow({
-        content: contentString
-    });
-
     marker[0] = newMarker;
 
-    infowindow.open(map, newMarker);
 }
 
 function moveStickMan() {
@@ -226,7 +210,7 @@ function moveStickMan() {
     });
 }
 
-function travelHere(name, marker) {
+function travelHere(map, name, marker) {
     var currentPos;
     var latlang = [];
     bikeLoc.forEach(function (bike) {
@@ -257,33 +241,52 @@ function travelHere(name, marker) {
             travelMode: 'BICYCLING'
         }, function (response, status) {
             if (status === 'OK') {
-                marker[0].setMap(null);
+                var object = calcCost(bikeStation[0].location, travelHereMarker[0].position);
+                infoWindow(map, name, marker[0], object);
                 directionsDisplay.setDirections(response);
-                calcCost(bikeStation[0].location, travelHereMarker[0].position)
+
+
             }
         });
     });
 }
 
+function infoWindow(map, name, marker, object) {
+
+    contentString = '<div id="content">' +
+        '<h1 id="firstHeading" class="firstHeading">' + name + '</h1>' +
+        '</div>' +
+        '<div id="bodyContent">' +
+        '<p>' +'Rate £' + object.rate + ' / 30 mins</p>' +
+        '<p>' +'Estimated time ' + object.avgt + ' min(s)</p>' +
+        '<p>' +'Estimated cost £' + object.avgc + '</p>' +
+        '<input id="chooseDestination" type="button" value="Confirm" onclick="setGoal()" >' +
+        '</div>';
+    infoWindow_ = new google.maps.InfoWindow({
+        content: contentString
+    });
+    infoWindow_.open(map, marker);
+}
 
 function calcCost(bikeLoc, destLoc) {
-    var distance = google.maps.geometry.spherical.computeDistanceBetween(bikeLoc, destLoc)/1000;
-    var estTime = ((distance/15)*60);
+    var distance = google.maps.geometry.spherical.computeDistanceBetween(bikeLoc, destLoc) / 1000;
+    var estTime = ((distance / 15) * 60);
     var baseCost = 1.0;
-    if (distance>0 && distance<=1){
+    if (distance > 0 && distance <= 1) {
         costMultiplier = 1;
-    } else if (distance>1 && distance<=2){
+    } else if (distance > 1 && distance <= 2) {
         costMultiplier = 0.9;
-    } else if (distance>2 && distance<=5){
+    } else if (distance > 2 && distance <= 5) {
         costMultiplier = 0.7;
-    } else if (distance>5 ){
+    } else if (distance > 5) {
         costMultiplier = 0.5;
     }
     var rate = baseCost * costMultiplier;
-    var avgCost = (Math.ceil(estTime/30))*rate;
+    var avgCost = (Math.ceil(estTime / 30)) * rate;
     var avgTime = Math.round(estTime, 2);
-    alert(rate + "£ per 30 mins and the journey will take aprox: " + Math.round(estTime, 2) + " mins and cost around: " + (Math.ceil(estTime/30))*rate )
-
-
-    alert(destLoc)
+    return {
+        rate: rate,
+        avgc: avgCost,
+        avgt: avgTime
+    };
 }
