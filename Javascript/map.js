@@ -1,13 +1,11 @@
-var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-var labelIndex = 0;
 var searchBox;
 var markers = [];
 var travelHereMarker = [];
 var map;
 var bikeLoc = [];
 
+var goals = [];
 var marker = [];
-var goalStation;
 var infoWindow_;
 var globalBoolean = false;
 
@@ -144,18 +142,23 @@ function addPlaces(searchBox, map) {
 }
 
 function travelHereLocation(location, map, marker) {
-    var geocoder = new google.maps.Geocoder;
-    geocoder.geocode({'location': location}, function (results, status) {
-        if (status === 'OK')
-            if (results[0]) {
-                console.log(results[0]);
-                travelHerePlace(results[0], map, marker);
-            }
-    });
+    if(!globalBoolean) {
+        var geocoder = new google.maps.Geocoder;
+        geocoder.geocode({'location': location}, function (results, status) {
+            if (status === 'OK')
+                if (results[0]) {
+                    console.log(results[0]);
+                    travelHerePlace(results[0], map, marker);
+                }
+        });
+    }
 }
 
 function setGoal() {
+    goals.push(marker[0]);
+    goals.push(travelHereMarker[0]);
     infoWindow_.close();
+    globalBoolean = true;
 
 }
 
@@ -187,8 +190,9 @@ function moveStickMan() {
     var stickmanIcon = 'images/stickman.png';
     navigator.geolocation.getCurrentPosition(function (position) {
         currentPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        if (goalStation !== undefined && google.maps.geometry.spherical.computeDistanceBetween(currentPos, goalStation) <= 10) {
-            //an alert :D;
+        if (goals[0] !== undefined && google.maps.geometry.spherical.computeDistanceBetween(currentPos, goals[0]) <= 50) {
+            goals.shift();
+
         }
 
         var icon = {
