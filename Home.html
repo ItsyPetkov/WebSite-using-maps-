@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="bootStrapCSS/bootstrap.min.css" rel="stylesheet">
+    <style>
+
+        *{
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        header{
+            font-size: 2rem;
+            line-height: 2.5rem;
+            font-weight: bold;
+            font-family: "Lato", sans-serif;;
+        }
+
+        footer{
+            font-size: 0.7rem;
+            line-height: 1rem;
+        }
+
+        header, footer{
+            background-color: black;
+            color: white;
+        }
+
+        main{
+            height: calc(100vh - 3.5rem);
+        }
+
+        body {
+            font-family: "Lato", sans-serif;
+        }
+
+        .sidenav {
+            /*height: 100%;*/
+            height: 75vh;
+            width: 0;
+            position: fixed;
+            /*position: relative;*/
+            z-index: 1;
+            top: 26vh;
+            /*top: 370px;*/
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        .sidenav a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+        .sidenav .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        p {
+            margin-top: 10px;
+            margin-bottom: 20px;
+            margin-left: 15px;
+            margin-right: 15px;
+            font-size: 25px;
+            font-family: sans-serif;
+        }
+
+
+        @media screen and (max-height: 450px) {
+            .sidenav {padding-top: 15px;}
+            .sidenav a {font-size: 18px;}
+        }
+    </style>
+    <title>Home</title>
+</head>
+<body>
+    <div id = "mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn"
+           onclick="closeNav()">&times;</a>
+        <a href="#">Edit Account</a>
+        <a href="#">Logout</a>
+    </div>
+
+<header>Smart Commute</header>
+    <main>
+<span
+        id="sandwich" style="font-size: 50px;cursor: pointer;position: relative;top:130px;left: -150px;width: 100vw;" onclick="openNav()">&#9776;
+</span>
+        <img src="images/SmartCommute.png" height="125" style="position:relative;top:-70px" title="Plan Route">
+
+        <!--<p>Welcome to Smart Commute. Please select one of the options below.</p>-->
+
+        <p>Welcome to Smart Commute. Click below to find the closest bikes in your area.</p>
+
+        <div class="button">
+            <button type="submit" class="btn btn-outline-primary" name="rentabike">Rent a Bike</button>
+        <br>
+            <br>
+
+            <p>Click below to keep your friends updated on your travels!</p>
+
+            <a href="https://www.facebook.com/sharer/sharer.php?u=example.org" target="_blank">
+                <button type="submit" class="btn btn-outline-primary" name="share">Share on Facebook</button></a>
+        </div>
+
+        <!--<p>We hope you enjoy your time with us!</p>-->
+    </main>
+    <footer>Created by Group S 2019</footer>
+
+<script>
+    function openNav() {
+        // document.getElementById("mySidenav").style.width = "250px";
+        document.getElementById("mySidenav").style.width = "100vw";
+    }
+
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+    }
+</script>
+</body>
+</html>
