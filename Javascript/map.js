@@ -15,6 +15,7 @@ var contentString;
 
 /*Code modified from Google Maps JS API Documentation: https://developers.google.com/maps/documentation/javascript/examples/places-searchbox */
 function initMap() {
+	
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
 
@@ -153,15 +154,16 @@ function travelHereLocation(location, map, marker) {
     }
 }
 
-function setGoal()  {
-    console.log(bikeLocations[0]);
+function setGoal() {
+	if (!globalBoolean){
+		    console.log(bikeLocations[0]);
     console.log(travelHereMarker[0].position);
     goals.push(bikeLocations[0]);
     goals.push(travelHereMarker[0].position);
-    travelHereMarker[0].setMap(null);
-    travelHereMarker = [];
     infoWindow_.close();
     globalBoolean = true;
+}
+infoWindow_.close();
 }
 
 function travelHerePlace(place, map, marker) {
@@ -190,19 +192,17 @@ function travelHerePlace(place, map, marker) {
 
 function moveStickMan() {
     var stickmanIcon = 'images/stickman.png';
+	console.log(goals)
     navigator.geolocation.getCurrentPosition(function (position) {
         currentPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         if (goals.length !== 0 && google.maps.geometry.spherical.computeDistanceBetween(currentPos, goals[0]) <= 100) {
+            
+            //calcCost(currentPos, goals[1])
+            
+            var object = calcCost(currentPos, travelHereMarker[0].position);
+            infoWindow(map, "", marker[0], object, "Rental")
             goals.shift();
-            var content = '<div id="content">' +
-                '<input id="confirmRental" type="button" value="Confirm Rental" onclick="infoWindow_.setMap(null);" >' +
-                '</div>' +
-                '<div id="bodyContent">' +
-                '</div>';
-            infoWindow_ = new google.maps.InfoWindow({
-                content: content
-            });
-            infoWindow_.open(map, marker[0]);
+            
         }
 
         var icon = {
@@ -223,10 +223,6 @@ function moveStickMan() {
         else
             marker[0].setPosition(currentPos);
     });
-}
-
-function travelToDestination(map, marker){
-
 }
 
 function travelHere(map, name, marker) {
@@ -262,22 +258,24 @@ function travelHere(map, name, marker) {
         }, function (response, status) {
             if (status === 'OK') {
                 var object = calcCost(bikeStation[0].location, travelHereMarker[0].position);
-                infoWindow(map, name, marker[0], object);
+                infoWindow(map, name, marker[0], object, "Route");
                 directionsDisplay.setDirections(response);
+
+
             }
         });
     });
 }
 
-function infoWindow(map, name, marker, object) {
+function infoWindow(map, name, marker, object, confirm) {
     contentString = '<div id="content">' +
         '<h1 id="firstHeading" class="firstHeading">' + name + '</h1>' +
         '</div>' +
         '<div id="bodyContent">' +
-        '<p>' + 'Rate £' + object.rate + ' / 30 mins</p>' +
-        '<p>' + 'Estimated time ' + object.avgt + ' min(s)</p>' +
-        '<p>' + 'Estimated cost £' + object.avgc + '</p>' +
-        '<input id="chooseDestination" type="button" value="Confirm" onclick="setGoal()" >' +
+        '<p>' + 'Rate: £' + object.rate + ' / 30 mins</p>' +
+        '<p>' + 'Estimated time: ' + object.avgt + ' min(s)</p>' +
+        '<p>' + 'Estimated cost: £' + object.avgc + '</p>' +
+        '<input id="chooseDestination" type="button" value="Confirm ' + confirm + ' " onclick="setGoal()" >' +
         '</div>';
     infoWindow_ = new google.maps.InfoWindow({
         content: contentString
