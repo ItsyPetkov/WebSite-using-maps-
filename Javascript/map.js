@@ -158,9 +158,10 @@ function setGoal() {
     console.log(travelHereMarker[0].position);
     goals.push(bikeLocations[0]);
     goals.push(travelHereMarker[0].position);
+    travelHereMarker[0].setMap(null);
+    travelHereMarker = [];
     infoWindow_.close();
     globalBoolean = true;
-
 }
 
 function travelHerePlace(place, map, marker) {
@@ -224,6 +225,10 @@ function moveStickMan() {
     });
 }
 
+function travelToDestination(map, marker){
+
+}
+
 function travelHere(map, name, marker) {
     var currentPos;
     var latlang = [];
@@ -259,8 +264,6 @@ function travelHere(map, name, marker) {
                 var object = calcCost(bikeStation[0].location, travelHereMarker[0].position);
                 infoWindow(map, name, marker[0], object);
                 directionsDisplay.setDirections(response);
-
-
             }
         });
     });
