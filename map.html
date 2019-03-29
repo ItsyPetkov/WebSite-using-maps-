@@ -9,19 +9,26 @@
     <link rel="shortcut icon" href="#">
     <link rel="icon" sizes="128x128" href="images/bike.png"/>
 
-
     <link rel="stylesheet" type="text/css" href="CSS/map.css"/>
 
     <title>Map Test</title>
 </head>
 <body>
 <header>Smart Commute</header>
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="Home.html">Home</a>
+    <a href="details.php">Account</a>
+    <a href="login.php">Logout</a>
+</div>
+<div id="sandwich" onclick="openNav()">&#9776;</div>
 <main>
     <input id="pac-input" class="controls" type="text" size="25" placeholder="Enter your destination...">
     <div id="map"></div>
 </main>
 <footer>Created by Group S 2019</footer>
 <script type="text/javascript" src="Javascript/map.js"></script>
+<script type="text/javascript" src="Javascript/sidenav.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAu1FjI1J5sRfRSJV9mjBBIwH-XhjYvYzQ&libraries=places&callback=initMap"
         async defer></script>
 </body>
