@@ -22,7 +22,7 @@ header, footer {
     color: white;
 }
 
-#mainDiv {
+main {
     height: calc(100vh - 3.5rem - 12vh);
 }
 
@@ -106,6 +106,31 @@ p {
     margin-left: 3vw;
 }
 
-.button {
+#sidebarDiv {
+    float:left;
+    height: 100%;
+    width:15%;
+    background-color: rgba(0,47,155,0.6);
+}
+
+#containerDiv {
+    height: 100%;
+    width: 85%;
+    margin-left: calc(15% + 1%);
+}
+
+#plannerDiv {
+    border: solid;
+    border-radius: 20px;
+    background-color: rgba(0,47,155,0.6);
+}
+
+#plannerDiv p {
+    color: white;
+    font-size: 1.5rem;
+}
+
+#plannerDiv button {
+    background-color: white;
 
 }
