@@ -153,7 +153,7 @@ function travelHereLocation(location, map, marker) {
     }
 }
 
-function setGoal() {
+function setGoal()  {
     console.log(bikeLocations[0]);
     console.log(travelHereMarker[0].position);
     goals.push(bikeLocations[0]);
