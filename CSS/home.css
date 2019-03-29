@@ -12,6 +12,7 @@ header {
 }
 
 footer {
+    margin-bottom: 0;
     font-size: 0.7rem;
     line-height: 1rem;
 }
@@ -22,7 +23,7 @@ header, footer {
 }
 
 #mainDiv {
-    height: calc(100vh - 3.5rem);
+    height: calc(100vh - 3.5rem - 12vh);
 }
 
 body {
@@ -31,12 +32,12 @@ body {
 
 .sidenav {
     /*height: 100%;*/
-    height: calc(calc(100vh - 3.5rem) - 125px);
+    height: calc(100vh - 3.5rem - 12vh);
     width: 0;
     position: fixed;
     /*position: relative;*/
     z-index: 1;
-    top: calc(2.5rem + 125px);
+    top: calc(2.5rem + 12vh);
     /*top: 370px;*/
     left: 0;
     background-color: #111;
@@ -86,4 +87,26 @@ p {
     .sidenav a {
         font-size: 18px;
     }
+}
+
+#top-img {
+    height: 12vh;
+    position: relative;
+    alignment: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#sandwich {
+    font-size: 2.5em;
+    cursor: pointer;
+    position: relative;
+    width: 100vw;
+    text-align: left;
+    margin-left: 3vw;
+}
+
+.button {
+
 }
