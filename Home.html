@@ -13,33 +13,34 @@
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn"
        onclick="closeNav()">&times;</a>
-    <a href="details.php">Edit Account</a>
+    <a href="#" >Home</a>
+    <a href="details.php">Account</a>
     <a href="login.php">Logout</a>
 </div>
 
 <header>Smart Commute</header>
 <main>
-<span
-        id="sandwich" style="font-size: 50px;cursor: pointer;position: relative;top:130px;left: -150px;width: 100vw;"
-        onclick="openNav()">&#9776;
-</span>
-    <img src="images/SmartCommute.png" height="125" style="position:relative;top:-70px" title="Plan Route">
+    <div id="mainDiv">
+        <span
+                id="sandwich" style="font-size: 50px;cursor: pointer;position: relative;top:130px;left: -150px;width: 100vw;"
+                onclick="openNav()">&#9776;
+        </span>
+        <img src="images/SmartCommute.png" height="125" style="position:relative;top:-70px" title="Plan Route">
 
-    <!--<p>Welcome to Smart Commute. Please select one of the options below.</p>-->
+        <p>Welcome to Smart Commute. Click below to find the closest bikes in your area.</p>
 
-    <p>Welcome to Smart Commute. Click below to find the closest bikes in your area.</p>
-
-    <div class="button">
-        <form action="map.html">
-            <button type="submit" class="btn btn-outline-primary" name="rentabike">Rent a Bike</button>
-        </form>
+        <div class="button">
+            <form action="map.html">
+                <button type="submit" class="btn btn-outline-primary" name="rentabike">Rent a Bike</button>
+            </form>
+        </div>
         <br>
         <p>Click below to keep your friends updated on your travels!</p>
         <form action="https://www.facebook.com/sharer/sharer.php?u=example.org">
             <button type="submit" class="btn btn-outline-primary" name="share">Share on Facebook</button>
         </form>
+        <!--<p>We hope you enjoy your time with us!</p>-->
     </div>
-    <!--<p>We hope you enjoy your time with us!</p>-->
 </main>
 <footer>Created by Group S 2019</footer>
 
