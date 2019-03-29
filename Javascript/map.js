@@ -8,6 +8,7 @@ var goals = [];
 var marker = [];
 var infoWindow_;
 var globalBoolean = false;
+var finalPrice;
 
 var directionsService;
 var directionsDisplay;
@@ -15,7 +16,7 @@ var contentString;
 
 /*Code modified from Google Maps JS API Documentation: https://developers.google.com/maps/documentation/javascript/examples/places-searchbox */
 function initMap() {
-	
+
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
 
@@ -155,15 +156,14 @@ function travelHereLocation(location, map, marker) {
 }
 
 function setGoal() {
-	if (!globalBoolean){
-		    console.log(bikeLocations[0]);
-    console.log(travelHereMarker[0].position);
-    goals.push(bikeLocations[0]);
-    goals.push(travelHereMarker[0].position);
     infoWindow_.close();
-    globalBoolean = true;
-}
-infoWindow_.close();
+    if (!globalBoolean) {
+        goals.push(bikeLocations[0]);
+        goals.push(travelHereMarker[0].position);
+        globalBoolean = true;
+    } else {
+        recreateRoute();
+    }
 }
 
 function travelHerePlace(place, map, marker) {
@@ -191,19 +191,20 @@ function travelHerePlace(place, map, marker) {
 }
 
 function moveStickMan() {
-    var stickmanIcon = 'images/stickman.png';
-	console.log(goals)
     navigator.geolocation.getCurrentPosition(function (position) {
         currentPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         if (goals.length !== 0 && google.maps.geometry.spherical.computeDistanceBetween(currentPos, goals[0]) <= 100) {
-            
-            //calcCost(currentPos, goals[1])
-            
-            var object = calcCost(currentPos, travelHereMarker[0].position);
-            infoWindow(map, "", marker[0], object, "Rental")
+            if (goals.length === 1) {
+                globalBoolean = false;
+                finalWindowBruv(map, marker[0]);
+            } else {
+                var object = calcCost(currentPos, travelHereMarker[0].position);
+                infoWindow(map, "", marker[0], object, "Rental");
+            }
             goals.shift();
-            
         }
+
+        var stickmanIcon = goals.length === 1 ? 'images/cyclist-location.png' : 'images/stickman.png' ;
 
         var icon = {
             url: stickmanIcon,
@@ -298,10 +299,48 @@ function calcCost(bikeLoc, destLoc) {
     }
     var rate = baseCost * costMultiplier;
     var avgCost = (Math.ceil(estTime / 30)) * rate;
+    finalPrice = avgCost;
     var avgTime = Math.round(estTime, 2);
     return {
         rate: rate,
         avgc: avgCost,
         avgt: avgTime
     };
+}
+
+function recreateRoute() {
+    var currentPos;
+    navigator.geolocation.getCurrentPosition(function (position) {
+        currentPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        directionsService.route({
+            origin: currentPos,
+            destination: goals[0],
+            travelMode: 'BICYCLING'
+        }, function (response, status) {
+            if (status === 'OK') {
+                directionsDisplay.setDirections(response);
+            }
+        });
+    });
+}
+
+function finalWindowBruv(map, marker) {
+    contentString = '<div id="content">' +
+        '<h1 id="firstHeading" class="firstHeading">Congratulations</h1>' +
+        '</div>' +
+        '<div id="bodyContent">' +
+        '<p>' + 'Cost: £' + finalPrice + '</p>' +
+        '<input id="chooseDestination" type="button" value="Plan another trip" onclick="newFunction()" >' +
+        '</div>';
+    infoWindow_ = new google.maps.InfoWindow({
+        content: contentString
+    });
+    infoWindow_.open(map, marker);
+}
+
+function newFunction() {
+    infoWindow_.setMap(null);
+    directionsDisplay.setMap(null);
+    directionsDisplay = new google.maps.DirectionsRenderer;
+    directionsDisplay.setMap(map);
 }
