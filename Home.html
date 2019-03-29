@@ -34,11 +34,31 @@
                 <button type="submit" class="btn btn-outline-primary" name="rentabike">Go to Planner</button>
             </form>
         </div>
-            <br>
-            <p>Click below to keep your friends updated on your travels!</p>
-            <form action="https://www.facebook.com/sharer/sharer.php?u=example.org">
-                <button type="submit" class="btn btn-outline-primary" name="share">Share on Facebook</button>
-            </form>
+        <br>
+        <div id="shareDiv">
+            <p>Keep your friends posted about your travels and experiences</p>
+
+            <!-- code copied from internet to share to facebook -->
+            <div id="fb-root"></div>
+            <script>(function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));</script>
+            <!-- Your share button code -->
+            <div class="fb-share-button"
+                 data-href="https://www.your-domain.com/your-page.html"
+                 data-layout="button_count">
+            </div>
+            <!--- end of facebook code -->
+
+            <br><br>
+
+            <!-- code copied from internet to share to twitter -->
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
     </div>
 </main>
 <footer>Created by Group S 2019</footer>
